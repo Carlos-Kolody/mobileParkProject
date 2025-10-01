@@ -1,6 +1,12 @@
-import topo from '../mocks/topo.js';
+// src/services/carregaDados.js
 
-export const carregaTopo = () => {
-    return topo;
-};
+import usuario from '../mocks/usuario.js';
+import estacionamentos from '../mocks/estacionamentos.js';
 
+export const carregaUsuario = () => {
+    return usuario;
+}
+
+export const carregaEstacionamentos = () => {
+    return estacionamentos;
+}
