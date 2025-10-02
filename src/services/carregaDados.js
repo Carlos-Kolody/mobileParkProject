@@ -1,5 +1,3 @@
-// src/services/carregaDados.js
-
 import usuario from '../mocks/usuario.js';
 import estacionamentos from '../mocks/estacionamentos.js';
 
