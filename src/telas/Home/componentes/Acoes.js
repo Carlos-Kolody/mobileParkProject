@@ -1,9 +1,6 @@
-// src/telas/Home/componentes/Acoes.js
-
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Criamos uma função onPress que chama a navegação
 const Acao = ({ icone, texto, onPress }) => (
   <TouchableOpacity style={estilos.botao} onPress={onPress}>
     <Text style={estilos.icone}>{icone}</Text>
@@ -11,7 +8,6 @@ const Acao = ({ icone, texto, onPress }) => (
   </TouchableOpacity>
 );
 
-// O componente Acoes agora recebe { navigation } que veio da Home
 export default function Acoes({ navigation }) {
   return (
     <View style={estilos.container}>
@@ -55,4 +51,5 @@ const estilos = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+
 });
