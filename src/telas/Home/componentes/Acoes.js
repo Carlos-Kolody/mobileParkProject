@@ -3,20 +3,33 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-// Ícones podem ser adicionados depois com uma biblioteca como react-native-vector-icons
-const Acao = ({ icone, texto }) => (
-  <TouchableOpacity style={estilos.botao}>
+// Criamos uma função onPress que chama a navegação
+const Acao = ({ icone, texto, onPress }) => (
+  <TouchableOpacity style={estilos.botao} onPress={onPress}>
     <Text style={estilos.icone}>{icone}</Text>
     <Text style={estilos.textoBotao}>{texto}</Text>
   </TouchableOpacity>
 );
 
-export default function Acoes() {
+// O componente Acoes agora recebe { navigation } que veio da Home
+export default function Acoes({ navigation }) {
   return (
     <View style={estilos.container}>
-      <Acao icone="🚗" texto="Reservar agora" />
-      <Acao icone="📅" texto="Minhas reservas" />
-      <Acao icone="🛒" texto="Comprar créditos" />
+      <Acao
+        icone="🚗"
+        texto="Reservar agora"
+        onPress={() => navigation.navigate('Reservar')}
+      />
+      <Acao
+        icone="📅"
+        texto="Minhas reservas"
+        onPress={() => navigation.navigate('MinhasReservas')}
+      />
+      <Acao
+        icone="🛒"
+        texto="Comprar créditos"
+        onPress={() => navigation.navigate('ComprarCreditos')}
+      />
     </View>
   );
 }
