@@ -5,11 +5,13 @@ import { ScrollView } from 'react-native';
 import Cabecalho from './componentes/Cabecalho';
 import Acoes from './componentes/Acoes';
 
-export default function Home() {
+// A tela Home agora recebe a propriedade { navigation } automaticamente do Stack Navigator
+export default function Home({ navigation }) {
   return (
     <ScrollView>
       <Cabecalho />
-      <Acoes />
+      {/* Passamos a propriedade para o componente que tem os botões */}
+      <Acoes navigation={navigation} />
     </ScrollView>
   );
 }
