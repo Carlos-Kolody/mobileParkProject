@@ -1,4 +1,3 @@
-// src/mocks/usuario.js
 const usuario = {
     nome: "Gabriel",
     saldo: "R$23,00",

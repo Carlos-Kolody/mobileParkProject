@@ -1,5 +1,3 @@
-// src/telas/Home/componentes/Cabecalho.js
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { carregaUsuario } from '../../../services/carregaDados.js';

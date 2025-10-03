@@ -1,5 +1,3 @@
-// src/mocks/estacionamentos.js
-
 const estacionamentos = {
     titulo: "Estacionamentos Parceiros",
     lista: [
@@ -17,5 +15,6 @@ const estacionamentos = {
       },
     ],
 };
+
 
 export default estacionamentos;
