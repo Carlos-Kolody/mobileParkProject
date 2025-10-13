@@ -91,9 +91,9 @@ export default function Reservar({ navigation }) {
         <View style={estilos.caixa}>
           <View>
             <Text style={estilos.icone}>📅</Text>
-            <Text style={estilos.titulo}>
+            {/*<Text style={estilos.titulo}>
               {data.toLocaleDateString('pt-BR')}
-            </Text>
+            </Text>*/}
             <Text style={estilos.subtitulo}>
               {horaInicio} - {horaFim}
             </Text>
