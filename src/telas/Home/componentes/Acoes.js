@@ -51,5 +51,4 @@ const estilos = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-
 });
