@@ -16,5 +16,4 @@ const estacionamentos = {
     ],
 };
 
-
 export default estacionamentos;
