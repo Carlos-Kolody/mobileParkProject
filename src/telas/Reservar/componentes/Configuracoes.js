@@ -9,7 +9,8 @@ import {
   FlatList, 
   TextInput, 
   KeyboardAvoidingView, 
-  Platform 
+  Platform,
+  SafeAreaView // Componente importante para área de navegação do OS
 } from 'react-native';
 
 
@@ -38,143 +39,148 @@ export default function Reservar({ navigation }) {
   ];
 
   return (
-    <KeyboardAvoidingView
-      style={estilos.tela}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
-    >
-      <ScrollView contentContainerStyle={estilos.container}>
-        {}
-        <Text style={estilos.saldo}>Saldo: R$23,00</Text>
+    // SafeAreaView garante que o conteúdo não fique sob barras de status/navegação
+    <SafeAreaView style={estilos.tela}>
+      <KeyboardAvoidingView
+        style={estilos.tela}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}
+      >
+        <ScrollView contentContainerStyle={estilos.container}>
+          {/* Saldo */}
+          <Text style={estilos.saldo}>Saldo: R$23,00</Text>
 
-        {}
-        <Text style={estilos.tituloSecao}>Selecione o veículo:</Text>
-        <View style={estilos.caixa}>
-          <View>
-            <Text style={estilos.icone}>🚗</Text>
-            <Text style={estilos.titulo}>{veiculo.nome}</Text>
-            <Text style={estilos.subtitulo}>{veiculo.placa}</Text>
+          {/* Seção Veículo */}
+          <Text style={estilos.tituloSecao}>Selecione o veículo:</Text>
+          <View style={estilos.caixa}>
+            <View>
+              <Text style={estilos.icone}>🚗</Text>
+              <Text style={estilos.titulo}>{veiculo.nome}</Text>
+              <Text style={estilos.subtitulo}>{veiculo.placa}</Text>
+            </View>
+            <TouchableOpacity style={estilos.botaoTrocar} onPress={() => setMostrarVeiculos(true)}>
+              <Text style={estilos.textoTrocar}>Trocar</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={estilos.botaoTrocar} onPress={() => setMostrarVeiculos(true)}>
-            <Text style={estilos.textoTrocar}>Trocar</Text>
-          </TouchableOpacity>
-        </View>
 
-        {}
-        <Text style={estilos.tituloSecao}>Selecione o estacionamento:</Text>
-        <View style={estilos.caixa}>
-          <View>
-            <Text style={estilos.icone}>🅿️</Text>
-            <Text style={estilos.titulo}>{estacionamento}</Text>
+          {/* Seção Estacionamento */}
+          <Text style={estilos.tituloSecao}>Selecione o estacionamento:</Text>
+          <View style={estilos.caixa}>
+            <View>
+              <Text style={estilos.icone}>🅿️</Text>
+              <Text style={estilos.titulo}>{estacionamento}</Text>
+            </View>
+            <TouchableOpacity style={estilos.botaoTrocar} onPress={() => setMostrarEstacionamentos(true)}>
+              <Text style={estilos.textoTrocar}>Trocar</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={estilos.botaoTrocar} onPress={() => setMostrarEstacionamentos(true)}>
-            <Text style={estilos.textoTrocar}>Trocar</Text>
-          </TouchableOpacity>
-        </View>
 
-        {}
-        <Text style={estilos.tituloSecao}>Selecione a data e o período (digite):</Text>
-        <View style={[estilos.caixa, { justifyContent: 'space-around' }]}>
-          {}
-          <View>
-            <Text style={estilos.titulo}>Data:</Text>
-            <TextInput
-              style={estilos.inputTempo}
-              value={dataTexto}
-              onChangeText={setDataTexto}
-              placeholder="DD/MM/AAAA"
-              keyboardType="numeric"
-              maxLength={10}
-            />
+          {/* Seção Data e Período */}
+          <Text style={estilos.tituloSecao}>Selecione a data e o período (digite):</Text>
+          <View style={[estilos.caixa, { justifyContent: 'space-around' }]}>
+            {/* Input Data */}
+            <View>
+              <Text style={estilos.titulo}>Data:</Text>
+              <TextInput
+                style={estilos.inputTempo}
+                value={dataTexto}
+                onChangeText={setDataTexto}
+                placeholder="DD/MM/AAAA"
+                keyboardType="numeric"
+                maxLength={10}
+              />
+            </View>
+            {/* Input Hora Início */}
+            <View>
+              <Text style={estilos.titulo}>Início:</Text>
+              <TextInput
+                style={estilos.inputTempo}
+                value={horaInicio}
+                onChangeText={setHoraInicio}
+                placeholder="HH:MM"
+                keyboardType="numeric"
+                maxLength={5}
+              />
+            </View>
+            {/* Input Hora Fim */}
+            <View>
+              <Text style={estilos.titulo}>Fim:</Text>
+              <TextInput
+                style={estilos.inputTempo}
+                value={horaFim}
+                onChangeText={setHoraFim}
+                placeholder="HH:MM"
+                keyboardType="numeric"
+                maxLength={5}
+              />
+            </View>
           </View>
-          {}
-          <View>
-            <Text style={estilos.titulo}>Início:</Text>
-            <TextInput
-              style={estilos.inputTempo}
-              value={horaInicio}
-              onChangeText={setHoraInicio}
-              placeholder="HH:MM"
-              keyboardType="numeric"
-              maxLength={5}
-            />
-          </View>
-          {}
-          <View>
-            <Text style={estilos.titulo}>Fim:</Text>
-            <TextInput
-              style={estilos.inputTempo}
-              value={horaFim}
-              onChangeText={setHoraFim}
-              placeholder="HH:MM"
-              keyboardType="numeric"
-              maxLength={5}
-            />
-          </View>
-        </View>
+        </ScrollView>
 
-        {}
-        <TouchableOpacity style={estilos.botaoAvancar} onPress={() => navigation.navigate('ConfirmarReserva')}>
+        {/* BOTÃO FIXO NO RODAPÉ: Fora do ScrollView, usa position: 'absolute' */}
+        <TouchableOpacity 
+          style={estilos.botaoRodape} 
+          onPress={() => navigation.navigate('ConfirmarReserva')}
+        >
           <Text style={estilos.textoAvancar}>Avançar →</Text>
         </TouchableOpacity>
-      </ScrollView>
 
-      {}
-      <Modal visible={mostrarVeiculos} transparent animationType="slide">
-        <View style={estilos.modal}>
-          <View style={estilos.modalConteudo}>
-            <Text style={estilos.modalTitulo}>Escolha o veículo</Text>
-            <FlatList
-              data={veiculos}
-              keyExtractor={(item) => item.placa}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={estilos.itemLista}
-                  onPress={() => {
-                    setVeiculo(item);
-                    setMostrarVeiculos(false);
-                  }}
-                >
-                  <Text>{item.nome} ({item.placa})</Text>
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity onPress={() => setMostrarVeiculos(false)}>
-              <Text style={estilos.fecharModal}>Cancelar</Text>
-            </TouchableOpacity>
+        {/* Modal de veículos */}
+        <Modal visible={mostrarVeiculos} transparent animationType="slide">
+          <View style={estilos.modal}>
+            <View style={estilos.modalConteudo}>
+              <Text style={estilos.modalTitulo}>Escolha o veículo</Text>
+              <FlatList
+                data={veiculos}
+                keyExtractor={(item) => item.placa}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={estilos.itemLista}
+                    onPress={() => {
+                      setVeiculo(item);
+                      setMostrarVeiculos(false);
+                    }}
+                  >
+                    <Text>{item.nome} ({item.placa})</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <TouchableOpacity onPress={() => setMostrarVeiculos(false)}>
+                <Text style={estilos.fecharModal}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      {}
-      <Modal visible={mostrarEstacionamentos} transparent animationType="slide">
-        <View style={estilos.modal}>
-          <View style={estilos.modalConteudo}>
-            <Text style={estilos.modalTitulo}>Escolha o estacionamento</Text>
-            <FlatList
-              data={estacionamentosLista}
-              keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={estilos.itemLista}
-                  onPress={() => {
-                    setEstacionamento(item);
-                    setMostrarEstacionamentos(false);
-                  }}
-                >
-                  <Text>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity onPress={() => setMostrarEstacionamentos(false)}>
-              <Text style={estilos.fecharModal}>Cancelar</Text>
-            </TouchableOpacity>
+        {/* Modal de estacionamentos */}
+        <Modal visible={mostrarEstacionamentos} transparent animationType="slide">
+          <View style={estilos.modal}>
+            <View style={estilos.modalConteudo}>
+              <Text style={estilos.modalTitulo}>Escolha o estacionamento</Text>
+              <FlatList
+                data={estacionamentosLista}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={estilos.itemLista}
+                    onPress={() => {
+                      setEstacionamento(item);
+                      setMostrarEstacionamentos(false);
+                    }}
+                  >
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+              <TouchableOpacity onPress={() => setMostrarEstacionamentos(false)}>
+                <Text style={estilos.fecharModal}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      {}
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -183,8 +189,11 @@ const estilos = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  // O container agora usa paddingBottom para garantir que o último conteúdo
+  // do ScrollView não fique escondido sob o botão fixo.
   container: {
     padding: 16,
+    paddingBottom: 90, // Compensa a altura do botão + padding extra
   },
   saldo: {
     backgroundColor: '#f0f0f0',
@@ -234,18 +243,28 @@ const estilos = StyleSheet.create({
   textoTrocar: {
     fontWeight: 'bold',
   },
-  botaoAvancar: {
+  
+  // ESTILOS DO BOTÃO FIXO NO RODAPÉ
+  botaoRodape: {
     backgroundColor: '#000',
-    paddingVertical: 16,
-    borderRadius: 8,
+    paddingVertical: 16, // Padding padrão
     alignItems: 'center',
-    marginTop: 10,
+    // MARGEM EXTRA SOLICITADA: aumenta o espaço na parte inferior do botão
+    paddingBottom: 30, 
+    
+    // Propriedades para fixar
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 16,
   },
   textoAvancar: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
+  
   modal: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',

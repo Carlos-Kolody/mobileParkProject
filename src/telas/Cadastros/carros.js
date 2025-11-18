@@ -1,0 +1,15 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function ComprarCreditos() {
+  return (
+    <View style={estilos.container}>
+      <Text style={estilos.texto}>Tela de Cadastros de carros</Text>
+    </View>
+  );
+}
+
+const estilos = StyleSheet.create({
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  texto: { fontSize: 22, fontWeight: 'bold' },
+});
