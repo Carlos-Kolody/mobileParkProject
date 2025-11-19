@@ -1,15 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { ScrollView } from 'react-native';
+import Cabecalho from './componentes/Cabecalho';
+import Acoes from './componentes/Acoes';
 
-export default function MinhasReservas() {
+export default function MinhasReservas({ navigation }) {
   return (
-    <View style={estilos.container}>
-      <Text style={estilos.texto}>Tela de Minhas Reservas</Text>
-    </View>
+    <ScrollView>
+      <Cabecalho />
+      <Acoes navigation={navigation} />
+    </ScrollView>
   );
 }
-
-const estilos = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  texto: { fontSize: 22, fontWeight: "bold" },
-});

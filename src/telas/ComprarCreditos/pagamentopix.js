@@ -1,13 +1,13 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import Cabecalho from './componentes/Cabecalho';
-import Confirmacao from './componentes/Confirmacao';
+import PagamentoPix from './componentes/PagamentoPix';
 
-export default function ConfirmacaoScreen({ navigation, route }) {
+export default function PagamentoPixScreen({ navigation, route }) {
   return (
     <ScrollView>
       <Cabecalho />
-      <Confirmacao navigation={navigation} route={route} />
+      <PagamentoPix navigation={navigation} route={route} />
     </ScrollView>
   );
 }

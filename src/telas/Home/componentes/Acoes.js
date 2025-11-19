@@ -16,11 +16,13 @@ export default function Acoes({ navigation }) {
         texto="Reservar agora"
         onPress={() => navigation.navigate('Reservar')}
       />
+
       <Acao
         icone="📅"
         texto="Minhas reservas"
         onPress={() => navigation.navigate('MinhasReservas')}
       />
+
       <Acao
         icone="🛒"
         texto="Comprar créditos"
@@ -51,5 +53,4 @@ const estilos = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-
 });

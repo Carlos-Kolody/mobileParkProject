@@ -1,15 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
+import Cabecalho from './componentes/Cabecalho';
+import Compra from './componentes/Compra';
 
-export default function ComprarCreditos() {
+export default function ComprarCreditos({ navigation }) {
   return (
-    <View style={estilos.container}>
-      <Text style={estilos.texto}>Tela de Comprar Créditos</Text>
-    </View>
+    <ScrollView>
+      <Cabecalho />
+      <Compra navigation={navigation} />
+    </ScrollView>
   );
 }
-
-const estilos = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  texto: { fontSize: 22, fontWeight: 'bold' },
-});
