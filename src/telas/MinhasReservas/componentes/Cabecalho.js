@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { carregaUsuario } from '../../../services/carregaDados.js';
 
-export default function Cabecalho({ titulo = "Menu" }) {
+export default function Cabecalho({ titulo = "Minhas Reservas" }) {
   const navigation = useNavigation();
   const [usuario, setUsuario] = useState({});
   const [menuVisivel, setMenuVisivel] = useState(false);
@@ -61,6 +61,10 @@ export default function Cabecalho({ titulo = "Menu" }) {
 
           <TouchableOpacity onPress={() => irPara("MinhasReservas")}>
             <Text style={estilos.opcao}>📅 Minhas reservas</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => irPara("Login")}>
+            <Text style={estilos.opcao}>🚪Sair</Text>
           </TouchableOpacity>
         </View>
       )}

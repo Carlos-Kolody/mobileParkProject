@@ -2,13 +2,14 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-// Telas principais
+// Telas padrão
+import Login from "./src/telas/Login";          // <-- ADICIONADO
 import Home from "./src/telas/Home";
 import Reservar from "./src/telas/Reservar";
 import MinhasReservas from "./src/telas/MinhasReservas";
 import ComprarCreditos from "./src/telas/ComprarCreditos";
 
-// Pagamentos (Comprar Créditos)
+// Pagamentos
 import PagamentoPix from "./src/telas/ComprarCreditos/pagamentopix";
 import PagamentoCartao from "./src/telas/ComprarCreditos/pagamentocartao";
 
@@ -23,7 +24,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        {/* Tela inicial */}
+        {/* 🟢 Tela inicial passa a ser LOGIN */}
+        <Stack.Screen name="Login" component={Login} />
+
+        {/* 🏠 Tela principal */}
         <Stack.Screen name="Home" component={Home} />
 
         {/* Ações */}
