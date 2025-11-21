@@ -1,51 +1,78 @@
 import React, { useState } from 'react';
 import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  ScrollView, 
-  SafeAreaView,
-  Alert,
-  Modal, 
-  FlatList, 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    StyleSheet, 
+    ScrollView, 
+    SafeAreaView,
+    Alert,
+    Modal, 
+    FlatList 
 } from 'react-native';
 
+// CAMINHO CORRIGIDO
+import usuario from "../../../mocks/usuario";
+
 const CARTOES_CADASTRADOS = [
-    { id: 1, bandeira: 'Visa', final: '1234', nome: 'João F. Silva' },
-    { id: 2, bandeira: 'Mastercard', final: '5678', nome: 'João F. Silva' },
-    { id: 3, bandeira: 'Elo', final: '9012', nome: 'João F. Silva' },
+    { id: 1, bandeira: 'Visa', final: '1234', nome: 'Gabriel A. Vale' },
+    { id: 2, bandeira: 'Mastercard', final: '5678', nome: 'Gabriel A. Vale' },
 ];
 
 export default function PagamentoCartao({ navigation, route }) {
-    
-    const preco = 18.00;
-    
-    const [cartaoSelecionado, setCartaoSelecionado] = useState(CARTOES_CADASTRADOS[0] || null);
+
+    const preco = route.params?.preco ?? 0;
+
+    const [cartaoSelecionado, setCartaoSelecionado] = useState(CARTOES_CADASTRADOS[0]);
     const [mostrarModalCartoes, setMostrarModalCartoes] = useState(false);
+    
+    // NOVOS ESTADOS PARA CONTROLE DOS MODAIS PERSONALIZADOS
+    const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
+    const [mostrarSucesso, setMostrarSucesso] = useState(false);
+    const [novoSaldoDisplay, setNovoSaldoDisplay] = useState('');
 
+
+    // MANTIDA, mas agora ela apenas aciona o modal de CONFIRMAÇÃO
     const handleConfirmarPagamento = () => {
-        if (!cartaoSelecionado) {
-            Alert.alert("Erro", "Por favor, selecione um cartão.");
-            return;
-        }
-
-        Alert.alert(
-            "🎉 Pagamento Confirmado!",
-            `Pagamento de R$${preco.toFixed(2).replace('.', ',')} realizado com sucesso no Cartão ${cartaoSelecionado.bandeira} final ${cartaoSelecionado.final}.`,
-            [{ text: "OK", onPress: () => navigation.popToTop() }]
-        );
+        // Abre o modal de confirmação
+        setMostrarConfirmacao(true);
     };
+
+    // NOVA FUNÇÃO: Executa a lógica após a confirmação do usuário no modal
+    const processarPagamento = () => {
+        // 1. Fecha o modal de confirmação
+        setMostrarConfirmacao(false);
+
+        // 2. Lógica de atualização de saldo
+        const valorAtual = Number(usuario.saldo.replace("R$", "").replace(",", "."));
+        const novoSaldo = valorAtual + preco;
+        const novoSaldoFormatado = `R$${novoSaldo.toFixed(2).replace(".", ",")}`;
+
+        // 3. Atualiza o saldo do mock (simulação)
+        usuario.saldo = novoSaldoFormatado;
+        
+        // 4. Salva o novo saldo para exibir no modal de sucesso
+        setNovoSaldoDisplay(novoSaldoFormatado);
+
+        // 5. Abre o modal de sucesso
+        setMostrarSucesso(true);
+    };
+
+    // NOVA FUNÇÃO: Redireciona para Home após o sucesso
+    const handleFinalizar = () => {
+        setMostrarSucesso(false);
+        navigation.navigate("Home");
+    };
+
 
     const selecionarNovoCartao = (cartao) => {
         setCartaoSelecionado(cartao);
         setMostrarModalCartoes(false);
-    }
+    };
 
     const getIconeCartao = (bandeira) => {
         if (bandeira === 'Visa') return '💳';
         if (bandeira === 'Mastercard') return 'Ⓜ️';
-        if (bandeira === 'Elo') return '💳';
         return '💳';
     };
 
@@ -64,17 +91,82 @@ export default function PagamentoCartao({ navigation, route }) {
         </TouchableOpacity>
     );
 
+    // Componente Modal de Confirmação Personalizado
+    const ModalConfirmacao = () => (
+        <Modal 
+            visible={mostrarConfirmacao} 
+            transparent 
+            animationType="fade"
+            onRequestClose={() => setMostrarConfirmacao(false)}
+        >
+            <View style={estilos.modalOverlay}>
+                <View style={estilos.modalPersonalizado}>
+                    <Text style={estilos.modalTituloPersonalizado}>Confirmação de Compra</Text>
+                    <Text style={estilos.modalMensagem}>
+                        Você confirma a compra de créditos no valor de 
+                        <Text style={{fontWeight: 'bold'}}> R${preco.toFixed(2).replace('.', ',')} </Text>
+                        usando o cartão {cartaoSelecionado.bandeira} (Final {cartaoSelecionado.final})?
+                    </Text>
+                    <View style={estilos.modalBotoes}>
+                        <TouchableOpacity 
+                            style={[estilos.botaoModal, estilos.botaoCancelar]} 
+                            onPress={() => setMostrarConfirmacao(false)}
+                        >
+                            <Text style={estilos.textoBotaoModal}>Cancelar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={[estilos.botaoModal, estilos.botaoConfirmar]} 
+                            onPress={processarPagamento}
+                        >
+                            <Text style={estilos.textoBotaoModal}>Confirmar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    );
+
+    // Componente Modal de Sucesso Personalizado
+    const ModalSucesso = () => (
+        <Modal 
+            visible={mostrarSucesso} 
+            transparent 
+            animationType="fade"
+            onRequestClose={handleFinalizar}
+        >
+            <View style={estilos.modalOverlay}>
+                <View style={estilos.modalPersonalizado}>
+                    <Text style={[estilos.modalTituloPersonalizado, { color: '#007bff' }]}>✅ Saldo Atualizado!</Text>
+                    <Text style={estilos.modalMensagem}>
+                        A compra de R${preco.toFixed(2).replace('.', ',')} foi aprovada e seu novo saldo é:
+                    </Text>
+                    <Text style={estilos.novoSaldoText}>{novoSaldoDisplay}</Text>
+                    <TouchableOpacity 
+                        style={[estilos.botaoModal, estilos.botaoConfirmar, { width: '80%', marginTop: 20 }]} 
+                        onPress={handleFinalizar}
+                    >
+                        <Text style={estilos.textoBotaoModal}>Ir para a Home</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+
+
     return (
         <SafeAreaView style={estilos.tela}>
+            
+            {/* INSERÇÃO DOS MODAIS PERSONALIZADOS */}
+            <ModalConfirmacao />
+            <ModalSucesso />
+
             <ScrollView contentContainerStyle={estilos.container}>
                 
                 <Text style={estilos.titulo}>1. Detalhes de Pagamento</Text>
 
-                {}
                 <View style={estilos.blocoSelecao}>
                     <Text style={estilos.label}>Cartão Selecionado:</Text>
                     
-                    {}
                     <TouchableOpacity 
                         style={estilos.cartaoBox}
                         onPress={() => setMostrarModalCartoes(true)} 
@@ -93,30 +185,25 @@ export default function PagamentoCartao({ navigation, route }) {
                         <Text style={estilos.seta}>▼</Text>
                     </TouchableOpacity>
 
-                    {}
-
                 </View>
 
-                {}
-                <View style={[estilos.resumo, {marginBottom: 30}]}> {}
+                <View style={[estilos.resumo, { marginBottom: 30 }]}>
                     <Text style={estilos.resumoTexto}>Total de créditos:</Text>
                     <Text style={estilos.resumoValor}>R${preco.toFixed(2).replace('.', ',')}</Text>
                 </View>
-                
-                {}
-                <View style={{ height: 80 }} /> 
 
+                <View style={{ height: 80 }} /> 
             </ScrollView>
 
-            {}
             <TouchableOpacity 
                 style={estilos.botaoRodape} 
                 onPress={handleConfirmarPagamento}
             >
-                <Text style={estilos.textoBotaoRodape}>Pagar R${preco.toFixed(2).replace('.', ',')} →</Text>
+                <Text style={estilos.textoBotaoRodape}>
+                    Pagar R${preco.toFixed(2).replace('.', ',')} →
+                </Text>
             </TouchableOpacity>
 
-            {}
             <Modal visible={mostrarModalCartoes} transparent animationType="slide">
                 <View style={estilos.modal}>
                     <View style={estilos.modalConteudo}>
@@ -235,6 +322,7 @@ const estilos = StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    // --- ESTILOS DO MODAL DE SELEÇÃO DE CARTÃO ---
     modal: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -270,6 +358,69 @@ const estilos = StyleSheet.create({
         marginTop: 15,
         textAlign: 'center',
         color: 'red',
+        fontWeight: 'bold',
+    },
+
+    // --- NOVOS ESTILOS PARA MODAIS PERSONALIZADOS ---
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalPersonalizado: {
+        width: '85%',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        padding: 25,
+        alignItems: 'center',
+        elevation: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+    },
+    modalTituloPersonalizado: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: '#333',
+        textAlign: 'center',
+    },
+    modalMensagem: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+        lineHeight: 24,
+        color: '#555',
+    },
+    novoSaldoText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#000',
+        marginBottom: 15,
+    },
+    modalBotoes: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 10,
+    },
+    botaoModal: {
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        width: '48%',
+    },
+    botaoCancelar: {
+        backgroundColor: '#ccc',
+    },
+    botaoConfirmar: {
+        backgroundColor: '#000', // Manter preto para ação principal
+    },
+    textoBotaoModal: {
+        color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
     },
 });

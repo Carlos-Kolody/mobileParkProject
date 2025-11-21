@@ -2,18 +2,17 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-// Telas padrão
-import Login from "./src/telas/Login";          // <-- ADICIONADO
+import Login from "./src/telas/Login";
 import Home from "./src/telas/Home";
 import Reservar from "./src/telas/Reservar";
 import MinhasReservas from "./src/telas/MinhasReservas";
-import ComprarCreditos from "./src/telas/ComprarCreditos";
 
-// Pagamentos
+import ComprarCreditos from "./src/telas/ComprarCreditos";
+import Compra from "./src/telas/ComprarCreditos/componentes/Compra";
+
 import PagamentoPix from "./src/telas/ComprarCreditos/pagamentopix";
 import PagamentoCartao from "./src/telas/ComprarCreditos/pagamentocartao";
 
-// Cadastros
 import CadastrarCarro from "./src/telas/CadastrarCarro";
 import CadastrarCartao from "./src/telas/CadastrarCartao";
 
@@ -24,16 +23,16 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        {/* 🟢 Tela inicial passa a ser LOGIN */}
         <Stack.Screen name="Login" component={Login} />
-
-        {/* 🏠 Tela principal */}
         <Stack.Screen name="Home" component={Home} />
 
-        {/* Ações */}
+        {/* Telas principais */}
         <Stack.Screen name="Reservar" component={Reservar} />
         <Stack.Screen name="MinhasReservas" component={MinhasReservas} />
+
+        {/* Créditos */}
         <Stack.Screen name="ComprarCreditos" component={ComprarCreditos} />
+        <Stack.Screen name="Compra" component={Compra} />
 
         {/* Pagamentos */}
         <Stack.Screen name="PagamentoPix" component={PagamentoPix} />

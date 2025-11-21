@@ -1,91 +1,181 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  StyleSheet, 
-  ScrollView, 
-  SafeAreaView,
-  Alert 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    StyleSheet, 
+    ScrollView, 
+    SafeAreaView,
+    Modal, // Adicionado para os modais personalizados
+    Image // Adicionado para exibir o QR Code
 } from 'react-native';
 
-export default function PagamentoPix({ navigation }) {
-    
-    const precoSimulado = 18.00;
+// CAMINHO CORRIGIDO
+import usuario from "../../../mocks/usuario";
 
-    const handleCopyCode = () => { console.log("CÓDIGO: Copiar (Frontend)"); };
+// Importação da imagem do QR Code
+const QrCodeImage = require("../../../../assets/qrcode.png");
+
+export default function PagamentoPix({ navigation, route }) {
+
+    const preco = route.params?.preco ?? 0;
     
-    const handleJaPaguei = () => {
-        Alert.alert(
-            "🎉 Pagamento Confirmado!",
-            "Seu pagamento PIX foi verificado. Dentro de instantes seu saldo EasyPark deve ser atualizado.",
-            [
-                { 
-                    text: "Ver Reserva", 
-                    onPress: () => navigation.popToTop() 
-                }
-            ]
-        );
+    // NOVOS ESTADOS PARA CONTROLE DOS MODAIS PERSONALIZADOS
+    const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
+    const [mostrarSucesso, setMostrarSucesso] = useState(false);
+    const [novoSaldoDisplay, setNovoSaldoDisplay] = useState('');
+
+
+    const handleCopyCode = () => { 
+        console.log("CÓDIGO: Copiar (Frontend)"); 
     };
     
-    const handleCancelar = () => { console.log("CÓDIGO: Cancelar (Frontend)"); };
+    // Função que aciona o modal de CONFIRMAÇÃO quando "JÁ PAGUEI" é pressionado
+    const handleJaPaguei = () => {
+        setMostrarConfirmacao(true);
+    };
 
+    // NOVA FUNÇÃO: Processa o pagamento após a confirmação do usuário
+    const processarPagamento = () => {
+        // 1. Fecha o modal de confirmação
+        setMostrarConfirmacao(false);
+
+        // 2. Lógica de atualização de saldo
+        const valorAtual = Number(usuario.saldo.replace("R$", "").replace(",", "."));
+        const novoSaldo = valorAtual + preco;
+        const novoSaldoFormatado = `R$${novoSaldo.toFixed(2).replace(".", ",")}`;
+
+        // 3. Atualiza o saldo do mock (simulação)
+        usuario.saldo = novoSaldoFormatado;
+        
+        // 4. Salva o novo saldo para exibir no modal de sucesso
+        setNovoSaldoDisplay(novoSaldoFormatado);
+
+        // 5. Abre o modal de sucesso
+        setMostrarSucesso(true);
+    };
+
+    // NOVA FUNÇÃO: Redireciona para Home após o sucesso
+    const handleFinalizar = () => {
+        setMostrarSucesso(false);
+        navigation.navigate("Home");
+    };
+
+
+    // Componente Modal de Confirmação Personalizado
+    const ModalConfirmacao = () => (
+        <Modal 
+            visible={mostrarConfirmacao} 
+            transparent 
+            animationType="fade"
+            onRequestClose={() => setMostrarConfirmacao(false)}
+        >
+            <View style={estilosPix.modalOverlay}>
+                <View style={estilosPix.modalPersonalizado}>
+                    <Text style={estilosPix.modalTituloPersonalizado}>Confirmação de Pagamento</Text>
+                    <Text style={estilosPix.modalMensagem}>
+                        Ao clicar em "Paguei o PIX", você confirma que o pagamento de 
+                        <Text style={{fontWeight: 'bold'}}> R${preco.toFixed(2).replace('.', ',')} </Text>
+                        foi realizado. Deseja prosseguir com a confirmação?
+                    </Text>
+                    <View style={estilosPix.modalBotoes}>
+                        <TouchableOpacity 
+                            style={[estilosPix.botaoModal, estilosPix.botaoCancelarModal]} 
+                            onPress={() => setMostrarConfirmacao(false)}
+                        >
+                            <Text style={estilosPix.textoBotaoModal}>Voltar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={[estilosPix.botaoModal, estilosPix.botaoConfirmarModal]} 
+                            onPress={processarPagamento}
+                        >
+                            <Text style={estilosPix.textoBotaoModal}>Paguei o PIX</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    );
+
+    // Componente Modal de Sucesso Personalizado
+    const ModalSucesso = () => (
+        <Modal 
+            visible={mostrarSucesso} 
+            transparent 
+            animationType="fade"
+            onRequestClose={handleFinalizar}
+        >
+            <View style={estilosPix.modalOverlay}>
+                <View style={estilosPix.modalPersonalizado}>
+                    <Text style={[estilosPix.modalTituloPersonalizado, { color: 'green' }]}>✅ PIX Confirmado!</Text>
+                    <Text style={estilosPix.modalMensagem}>
+                        A compra de R${preco.toFixed(2).replace('.', ',')} foi confirmada e seu novo saldo é:
+                    </Text>
+                    <Text style={estilosPix.novoSaldoText}>{novoSaldoDisplay}</Text>
+                    <TouchableOpacity 
+                        style={[estilosPix.botaoModal, estilosPix.botaoConfirmarModal, { width: '80%', marginTop: 20 }]} 
+                        onPress={handleFinalizar}
+                    >
+                        <Text style={estilosPix.textoBotaoModal}>Ir para a Home</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+    
     return (
         <SafeAreaView style={estilosPix.tela}>
+            
+            {/* INSERÇÃO DOS MODAIS PERSONALIZADOS */}
+            <ModalConfirmacao />
+            <ModalSucesso />
+
             <ScrollView contentContainerStyle={estilosPix.container}>
                 
-                {}
                 <Text style={estilosPix.titulo}>1. Código PIX</Text>
 
-                {}
-                <View style={estilosPix.qrCodeBox}>
-                    {}
-                    <Text style={{ textAlign: 'center', fontSize: 100, marginBottom: 5 }}>██</Text> 
-                    <Text style={{ textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>QR Code Exemplo</Text> 
-                    
-
-[Image of a QR code]
-
+                {/* ALTERAÇÃO AQUI: Usa o componente Image para o QR Code */}
+                <View style={estilosPix.qrCodeContainer}>
+                    {/* Substitua QrCodeImage pelo path real se necessário. Se falhar, usa o placeholder */}
+                    <Image 
+                        source={QrCodeImage}
+                        style={estilosPix.qrCodeImage}
+                        resizeMode="contain"
+                        onError={(e) => console.log('Erro ao carregar QR Code:', e.nativeEvent.error)}
+                    />
                 </View>
 
-                {}
                 <TouchableOpacity onPress={handleCopyCode}>
                     <Text style={estilosPix.textoCopiar}>Copiar Código</Text>
                 </TouchableOpacity>
 
-                {}
+                <Text style={estilosPix.textoRodape}>
+                    Após realizar o pagamento no seu banco, clique em "JÁ PAGUEI" para que a confirmação dos créditos seja processada.
+                </Text>
+
+
                 <View style={estilosPix.containerBotoesAcao}>
-                    
-                    {}
+
                     <TouchableOpacity
                         style={[estilosPix.botaoAcao, estilosPix.botaoJaPaguei]}
-                        onPress={handleJaPaguei} 
+                        onPress={handleJaPaguei} // Aciona o Modal de Confirmação
                     >
                         <Text style={estilosPix.textoJaPaguei}>JÁ PAGUEI</Text>
                     </TouchableOpacity>
                     
-                    {}
                     <TouchableOpacity
                         style={[estilosPix.botaoAcao, estilosPix.botaoCancelar]}
-                        onPress={handleCancelar}
+                        onPress={() => navigation.goBack()}
                     >
                         <Text style={estilosPix.textoCancelar}>CANCELAR</Text>
                     </TouchableOpacity>
                 </View>
 
-                {}
-                <Text style={estilosPix.textoRodape}>
-                    
-                </Text>
-
-                {}
                 <View style={{ height: 80 }} /> 
-
             </ScrollView>
 
-            {}
             <View style={estilosPix.barraRodapeFixa}>
-                <Text style={estilosPix.textoRodapeFixo}>PIX: R${precoSimulado.toFixed(2).replace('.', ',')}</Text>
+                <Text style={estilosPix.textoRodapeFixo}>PIX: R${preco.toFixed(2).replace('.', ',')}</Text>
             </View>
         </SafeAreaView>
     );
@@ -107,20 +197,33 @@ const estilosPix = StyleSheet.create({
         alignSelf: 'flex-start',
         marginBottom: 20,
     },
-    qrCodeBox: {
-        width: 200, 
-        height: 200,
+    
+    // NOVO ESTILO: Container para a imagem do QR Code
+    qrCodeContainer: {
+        width: 250, 
+        height: 250,
         marginBottom: 10,
-        backgroundColor: '#f0f0f0', 
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#000',
+        // Removido border/background para a imagem aparecer limpa
+    },
+    qrCodeImage: {
+        width: '100%',
+        height: '100%',
+        // Se a imagem falhar, a View acima ainda serve de container
     },
     textoCopiar: {
         color: '#000',
         fontWeight: 'bold',
         textDecorationLine: 'underline',
+        marginBottom: 30,
+    },
+    textoRodape: { // Movido para cima do containerBotoesAcao
+        textAlign: 'center',
+        fontSize: 14,
+        color: '#555',
+        lineHeight: 20,
+        marginHorizontal: 10,
         marginBottom: 30,
     },
     containerBotoesAcao: {
@@ -139,26 +242,19 @@ const estilosPix = StyleSheet.create({
         alignItems: 'center',
     },
     botaoJaPaguei: {
-        borderColor: 'green',
-        backgroundColor: 'rgba(0, 128, 0, 0.1)',
+        borderColor: '#000',
+        backgroundColor: '#000', // Destaque para a ação principal
     },
     textoJaPaguei: {
-        color: 'green',
+        color: '#fff', // Texto branco no fundo preto
         fontWeight: 'bold',
     },
     botaoCancelar: {
-        borderColor: 'red',
+        borderColor: '#ccc', // Estilo mais neutro para cancelar
     },
     textoCancelar: {
-        color: 'red',
-        fontWeight: 'bold',
-    },
-    textoRodape: {
-        textAlign: 'center',
-        fontSize: 14,
         color: '#555',
-        lineHeight: 20,
-        marginHorizontal: 10,
+        fontWeight: 'bold',
     },
     barraRodapeFixa: {
         backgroundColor: '#000',
@@ -173,6 +269,69 @@ const estilosPix = StyleSheet.create({
     textoRodapeFixo: {
         color: '#fff',
         fontSize: 18,
+        fontWeight: 'bold',
+    },
+
+    // --- NOVOS ESTILOS PARA MODAIS PERSONALIZADOS (Copias do PagamentoCartao) ---
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalPersonalizado: {
+        width: '85%',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        padding: 25,
+        alignItems: 'center',
+        elevation: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.25,
+        shadowRadius: 5,
+    },
+    modalTituloPersonalizado: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: '#333',
+        textAlign: 'center',
+    },
+    modalMensagem: {
+        fontSize: 16,
+        textAlign: 'center',
+        marginBottom: 20,
+        lineHeight: 24,
+        color: '#555',
+    },
+    novoSaldoText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#000',
+        marginBottom: 15,
+    },
+    modalBotoes: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 10,
+    },
+    botaoModal: {
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        width: '48%',
+    },
+    botaoCancelarModal: { // Renomeado para evitar conflito com botaoCancelar principal
+        backgroundColor: '#ccc',
+    },
+    botaoConfirmarModal: {
+        backgroundColor: '#000', 
+    },
+    textoBotaoModal: {
+        color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
     },
 });
