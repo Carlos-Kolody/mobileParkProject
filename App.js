@@ -14,7 +14,12 @@ import PagamentoPix from "./src/telas/ComprarCreditos/pagamentopix";
 import PagamentoCartao from "./src/telas/ComprarCreditos/pagamentocartao";
 
 import CadastrarCarro from "./src/telas/CadastrarCarro";
+// IMPORTAÇÃO DA TELA DE HISTÓRICO DE CARROS
+import HistoricoCarros from "./src/telas/CadastrarCarro/historico"; 
+
 import CadastrarCartao from "./src/telas/CadastrarCartao";
+// IMPORTAÇÃO DA TELA DE HISTÓRICO DE CARTÕES
+import HistoricoCartoes from "./src/telas/CadastrarCartao/historico";
 
 const Stack = createStackNavigator();
 
@@ -40,7 +45,12 @@ export default function App() {
 
         {/* Cadastros */}
         <Stack.Screen name="CadastrarCarro" component={CadastrarCarro} />
+        {/* NOVA ROTA: Histórico de Carros */}
+        <Stack.Screen name="HistoricoCarros" component={HistoricoCarros} /> 
+
         <Stack.Screen name="CadastrarCartao" component={CadastrarCartao} />
+        {/* NOVA ROTA: Histórico de Cartões */}
+        <Stack.Screen name="HistoricoCartoes" component={HistoricoCartoes} /> 
 
       </Stack.Navigator>
     </NavigationContainer>
