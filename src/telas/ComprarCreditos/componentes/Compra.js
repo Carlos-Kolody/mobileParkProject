@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   SafeAreaView,
-  Modal, // Importação do Modal (Mesmo que o usemos de forma customizada no estado)
+  Modal, 
 } from "react-native";
 
 import usuario from "../../../mocks/usuario";
@@ -14,7 +14,6 @@ import usuario from "../../../mocks/usuario";
 export default function ComprarCreditos({ navigation }) {
   const [precoFinal, setPrecoFinal] = useState(0);
   const [metodoPagamento, setMetodoPagamento] = useState(null);
-  // NOVO ESTADO: Para controlar a visibilidade do box de alerta personalizado
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
   const [mensagemAlerta, setMensagemAlerta] = useState("");
 
@@ -34,13 +33,11 @@ export default function ComprarCreditos({ navigation }) {
     }
 
     if (precoFinal <= 0) {
-      // ALTERAÇÃO AQUI: Abre o box personalizado em vez de alert
       setMensagemAlerta("O valor da compra deve ser maior que R$0,00. Selecione a quantidade de créditos.");
       setMostrarAlerta(true);
       return;
     }
 
-    // Se a validação passar, navega
     if (metodoPagamento === "pix") {
       navigation.navigate("PagamentoPix", { preco: precoFinal });
     } else {
@@ -48,7 +45,6 @@ export default function ComprarCreditos({ navigation }) {
     }
   };
 
-  // Componente Customizado para o Alerta
   const AlertaPersonalizado = () => (
     <Modal
       transparent={true}
@@ -170,7 +166,6 @@ export default function ComprarCreditos({ navigation }) {
   );
 }
 
-// --- ESTILOS ADICIONADOS PARA O ALERTA ---
 const estilos = StyleSheet.create({
   tela: { flex: 1, backgroundColor: "#fff" },
   container: { padding: 20 },
@@ -271,10 +266,10 @@ const estilos = StyleSheet.create({
     fontWeight: "bold",
   },
   
-  // Novos estilos para o Alerta Personalizado
+  
   modalBackground: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fundo escurecido
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -284,13 +279,13 @@ const estilos = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     alignItems: 'center',
-    elevation: 10, // Sombra
+    elevation: 10, 
   },
   alertaTitulo: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#D00', // Vermelho para destaque
+    color: '#D00', 
   },
   alertaMensagem: {
     fontSize: 16,

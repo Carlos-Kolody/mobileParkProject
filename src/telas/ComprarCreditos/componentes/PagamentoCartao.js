@@ -11,7 +11,6 @@ import {
     FlatList 
 } from 'react-native';
 
-// CAMINHO CORRIGIDO
 import usuario from "../../../mocks/usuario";
 
 const CARTOES_CADASTRADOS = [
@@ -26,39 +25,30 @@ export default function PagamentoCartao({ navigation, route }) {
     const [cartaoSelecionado, setCartaoSelecionado] = useState(CARTOES_CADASTRADOS[0]);
     const [mostrarModalCartoes, setMostrarModalCartoes] = useState(false);
     
-    // NOVOS ESTADOS PARA CONTROLE DOS MODAIS PERSONALIZADOS
     const [mostrarConfirmacao, setMostrarConfirmacao] = useState(false);
     const [mostrarSucesso, setMostrarSucesso] = useState(false);
     const [novoSaldoDisplay, setNovoSaldoDisplay] = useState('');
 
 
-    // MANTIDA, mas agora ela apenas aciona o modal de CONFIRMAÇÃO
+
     const handleConfirmarPagamento = () => {
-        // Abre o modal de confirmação
         setMostrarConfirmacao(true);
     };
 
-    // NOVA FUNÇÃO: Executa a lógica após a confirmação do usuário no modal
     const processarPagamento = () => {
-        // 1. Fecha o modal de confirmação
         setMostrarConfirmacao(false);
 
-        // 2. Lógica de atualização de saldo
         const valorAtual = Number(usuario.saldo.replace("R$", "").replace(",", "."));
         const novoSaldo = valorAtual + preco;
         const novoSaldoFormatado = `R$${novoSaldo.toFixed(2).replace(".", ",")}`;
 
-        // 3. Atualiza o saldo do mock (simulação)
         usuario.saldo = novoSaldoFormatado;
         
-        // 4. Salva o novo saldo para exibir no modal de sucesso
         setNovoSaldoDisplay(novoSaldoFormatado);
 
-        // 5. Abre o modal de sucesso
         setMostrarSucesso(true);
     };
 
-    // NOVA FUNÇÃO: Redireciona para Home após o sucesso
     const handleFinalizar = () => {
         setMostrarSucesso(false);
         navigation.navigate("Home");
@@ -91,7 +81,6 @@ export default function PagamentoCartao({ navigation, route }) {
         </TouchableOpacity>
     );
 
-    // Componente Modal de Confirmação Personalizado
     const ModalConfirmacao = () => (
         <Modal 
             visible={mostrarConfirmacao} 
@@ -126,7 +115,6 @@ export default function PagamentoCartao({ navigation, route }) {
         </Modal>
     );
 
-    // Componente Modal de Sucesso Personalizado
     const ModalSucesso = () => (
         <Modal 
             visible={mostrarSucesso} 
@@ -156,7 +144,7 @@ export default function PagamentoCartao({ navigation, route }) {
     return (
         <SafeAreaView style={estilos.tela}>
             
-            {/* INSERÇÃO DOS MODAIS PERSONALIZADOS */}
+            {}
             <ModalConfirmacao />
             <ModalSucesso />
 
@@ -322,7 +310,6 @@ const estilos = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-    // --- ESTILOS DO MODAL DE SELEÇÃO DE CARTÃO ---
     modal: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
@@ -361,7 +348,6 @@ const estilos = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-    // --- NOVOS ESTILOS PARA MODAIS PERSONALIZADOS ---
     modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.6)',
@@ -416,7 +402,7 @@ const estilos = StyleSheet.create({
         backgroundColor: '#ccc',
     },
     botaoConfirmar: {
-        backgroundColor: '#000', // Manter preto para ação principal
+        backgroundColor: '#000',
     },
     textoBotaoModal: {
         color: '#fff',

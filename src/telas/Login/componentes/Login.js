@@ -9,7 +9,7 @@ export default function Login({ navigation }) {
   const autenticar = () => {
     if (usuario === "admin" && senha === "admin") {
       setErro("");
-      navigation.replace("Home"); // impede voltar para o login
+      navigation.replace("Home"); 
     } else {
       setErro("Usuário ou senha incorretos.");
     }
@@ -18,7 +18,7 @@ export default function Login({ navigation }) {
   return (
     <View style={estilos.container}>
 
-      {/* Topo igual às outras telas */}
+      {}
       <View style={estilos.header}>
         <Text style={estilos.titulo}>Login</Text>
       </View>
