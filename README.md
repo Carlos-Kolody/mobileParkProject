@@ -1,29 +1,93 @@
-🚗 EasyPark
-Um aplicativo para facilitar a reserva antecipada de vagas de estacionamento em shoppings e parceiros.
+# 🚗 EasyPark
 
-🔨 Funcionalidades do Projeto
-Nesta parte do projeto desenvolvemos o fluxo de navegação e a lógica de reserva da aplicação.
+> Aplicativo móvel para reserva antecipada de vagas de estacionamento.
 
-Tela Início: Visualização de saldo, saudação ao usuário e menu de acesso rápido.
-Tela de Reserva: Seleção interativa de veículos, estacionamentos, data e horário (usando DateTimePicker).
-Navegação Stack: Fluxo fluido entre a tela inicial e a tela de reserva.
-Interatividade: Uso de Modals para seleção de itens e atualização de estado em tempo real.
-✔️ Técnicas e Tecnologias Utilizadas
-Durante esse projeto utilizamos:
+O **EasyPark** é um projeto desenvolvido para facilitar a vida de motoristas, permitindo a visualização de saldo, escolha de estacionamentos parceiros e agendamento de vagas com hora marcada.
 
-React Native
-Expo
-React Navigation (Native Stack)
-Datetimepicker (para seleção de data e hora)
-🎨 Link do Figma
-Para visualizar o Figma do projeto, clique aqui
+---
 
-🛠️ Como Abrir e Rodar o Projeto
-Para abrir e rodar o projeto, execute npm install para instalar as dependências e npx expo start para iniciar o projeto. Depois, seleciona a opção "a" no terminal para abrir o emulador Android ou utilize o app Expo Go.
+## 🔨 Funcionalidades
 
-📚 Mais Informações sobre o Curso
-O EasyPark é um projeto desenvolvido para a matéria de Desenvolvimento Mobile. A ideia principal é implementar um sistema funcional de reservas utilizando componentes nativos e navegação entre telas.
+O foco atual do desenvolvimento está na navegação fluida e na manipulação de dados de reserva:
 
-👥 Integrantes
-Carlos Eduardo Corleto Kolody
-Gabriel Augusto do Vale
+* **Tela Início**
+    * Dashboard com saldo atualizado.
+    * Menu de acesso rápido para as principais funções.
+* **Fluxo de Reserva**
+    * Seleção dinâmica de veículos cadastrados.
+    * Escolha de estacionamentos parceiros via Modal.
+    * Seleção de Data e Hora (Início e Fim) utilizando componentes nativos.
+* **Navegação**
+    * Implementação de *Stack Navigation* para transição intuitiva entre telas.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+Este projeto foi construído utilizando as seguintes tecnologias e bibliotecas:
+
+* **[React Native](https://reactnative.dev/)** - Framework principal.
+* **[Expo](https://expo.dev/)** - Plataforma para gestão do projeto.
+* **[React Navigation](https://reactnavigation.org/)** - Gerenciamento de rotas (Native Stack).
+* **[DateTimePicker](https://github.com/react-native-datetimepicker/datetimepicker)** - Componente para seleção de data/hora.
+
+---
+
+## 🎨 Layout do Projeto
+
+O design da interface foi planejado no Figma. Você pode acessar o protótipo através do link abaixo:
+
+🔗 **[Clique aqui para acessar o Figma](https://www.figma.com/design/kk0id7QZpFbYqkwHd6sYTk/EasyPark?node-id=0-1&t=HSTbglULYyeq1ogB-1)**
+
+---
+
+## 🚀 Como Executar o Projeto
+
+Siga os passos abaixo para rodar a aplicação em seu ambiente local:
+
+### Pré-requisitos
+Antes de começar, você precisa ter instalado:
+* [Node.js](https://nodejs.org/en/)
+* Aplicativo **Expo Go** no seu celular (ou um emulador Android/iOS configurado).
+
+### Passo a passo
+
+1.  **Clone o repositório**
+    ```bash
+    git clone <link-do-seu-repositorio>
+    ```
+
+2.  **Acesse a pasta do projeto**
+    ```bash
+    cd easypark
+    ```
+
+3.  **Instale as dependências**
+    ```bash
+    npm install
+    ```
+
+4.  **Inicie o servidor**
+    ```bash
+    npx expo start
+    ```
+
+5.  **Abra o aplicativo**
+    * No terminal, pressione **`a`** para abrir no Emulador Android.
+    * Ou leia o **QR Code** exibido no terminal com o app Expo Go.
+
+---
+
+## 📚 Contexto Acadêmico
+
+Este projeto faz parte da disciplina de **Desenvolvimento Mobile**. O objetivo pedagógico é aplicar conceitos fundamentais de desenvolvimento móvel híbrido, focando em:
+1.  Estruturação de componentes React.
+2.  Gerenciamento de estado (Hooks).
+3.  Navegação entre telas.
+
+---
+
+## 👥 
+
+* **Carlos Eduardo Corleto Kolody**
+* **Gabriel Augusto do Vale**
